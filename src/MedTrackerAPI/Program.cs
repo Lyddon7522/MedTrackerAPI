@@ -15,6 +15,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var folder = Environment.SpecialFolder.LocalApplicationData;
+var path = Environment.GetFolderPath(folder);
+var dbPath = Path.Join(path, "MedTracker.db");
+builder.Configuration.AddInMemoryCollection(new List<KeyValuePair<string, string>>
+{
+    new("ConnectionStrings:MedTracker", "DataSource=" + dbPath)
+}!);
+
+builder.Services.AddDbContext<MedTrackerDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("MedTracker"));
+});
+
 /*builder.Services.AddDbContext<MedTrackerDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("MedTracker"));
@@ -30,6 +43,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<MedTrackerDbContext>();
+dbContext.Database.EnsureDeleted();
+dbContext.Database.EnsureCreated();
 
 app.Run();
 
