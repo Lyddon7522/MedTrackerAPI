@@ -1,3 +1,4 @@
+using MedTrackerAPI.Endpoints;
 using MedTrackerAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Testcontainers.PostgreSql;
@@ -33,6 +34,8 @@ builder.Services.AddDbContext<MedTrackerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MedTracker"));
 });*/
 
+builder.Services.AddEndpoints();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,6 +51,8 @@ using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<MedTrackerDbContext>();
 dbContext.Database.EnsureDeleted();
 dbContext.Database.EnsureCreated();
+
+app.MapEndpoints();
 
 app.Run();
 
