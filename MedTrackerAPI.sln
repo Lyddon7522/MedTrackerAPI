@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedTrackerAPI", "src\MedTrackerAPI\MedTrackerAPI.csproj", "{A0FADA30-B669-409F-9224-E38C34E5ECB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedTrackerAPI.Tests", "src\MedTrackerAPI.Tests\MedTrackerAPI.Tests.csproj", "{CFE28DC1-212E-43B2-AECA-7F4881F91ED8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A0FADA30-B669-409F-9224-E38C34E5ECB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0FADA30-B669-409F-9224-E38C34E5ECB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0FADA30-B669-409F-9224-E38C34E5ECB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE28DC1-212E-43B2-AECA-7F4881F91ED8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE28DC1-212E-43B2-AECA-7F4881F91ED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE28DC1-212E-43B2-AECA-7F4881F91ED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE28DC1-212E-43B2-AECA-7F4881F91ED8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
