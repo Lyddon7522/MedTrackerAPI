@@ -7,6 +7,8 @@ namespace MedTrackerAPI.Features.Devices;
 
 public static class CreateDevice
 {
+    public record Response (int DeviceId);
+    
     /*public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceCommand>
     {
         public CreateDeviceCommandValidator()
@@ -25,12 +27,14 @@ public static class CreateDevice
         {
             app.MapPost("devices", async (IMediator mediator, CreateDeviceCommand command) =>
             {
-                await mediator.Send(command);
+               var deviceId = await mediator.Send(command);
+               
+               return Results.Ok(new Response(deviceId));
             }).WithTags("Devices");
         }
     }
     
-    public class CreateDeviceCommand() : IRequest<IResult>
+    public class CreateDeviceCommand() : IRequest<int>
     {
         public string Description { get; set; }
         public string? SerialNumber { get; set; }
@@ -40,9 +44,9 @@ public static class CreateDevice
         public string  LotNumber { get; set; }
     }
     
-    public class CreateDeviceCommandHandler(MedTrackerDbContext context) : IRequestHandler<CreateDeviceCommand, IResult>
+    public class CreateDeviceCommandHandler(MedTrackerDbContext context) : IRequestHandler<CreateDeviceCommand, int>
     {
-        public async Task<IResult> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
         {
             /*var validationResult = await validator.ValidateAsync(request, cancellationToken);
             
@@ -64,8 +68,7 @@ public static class CreateDevice
             context.Devices.Add(device);
             await context.SaveChangesAsync(cancellationToken);
             
-            // TODO implement response object. Possibly redirect to device details page
-            return Results.Ok();
+            return device.Id;
         }
     }
 }
