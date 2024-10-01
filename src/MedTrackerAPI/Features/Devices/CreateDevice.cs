@@ -7,7 +7,7 @@ namespace MedTrackerAPI.Features.Devices;
 
 public static class CreateDevice
 {
-    public record Response (int DeviceId);
+    private record Response (int DeviceId);
     
     /*public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceCommand>
     {

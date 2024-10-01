@@ -11,8 +11,8 @@ public static class EndpointExtensions
         
         return services;
     }
-    
-    public static IServiceCollection AddEndpoints(this IServiceCollection services, Assembly assembly)
+
+    private static IServiceCollection AddEndpoints(this IServiceCollection services, Assembly assembly)
     {
         ServiceDescriptor[] serviceDescriptors = assembly
             .DefinedTypes
