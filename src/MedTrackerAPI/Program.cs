@@ -60,7 +60,7 @@ app.MapEndpoints();
 
 app.Run();
 
-//TODO Implement PosgresSql. Need to get docker running
+/*//TODO Implement PosgresSql. Need to get docker running
 public sealed class PostgreSqlContainerFactory : IAsyncDisposable
 {
     private static readonly List<PostgreSqlContainer> PostgreSqlContainers = [];
@@ -81,4 +81,4 @@ public sealed class PostgreSqlContainerFactory : IAsyncDisposable
 
         return postgreSqlContainer.GetConnectionString();
     }
-}
+}*/
