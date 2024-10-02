@@ -9,28 +9,29 @@ public static class CreateDevice
 {
     private record Response (int DeviceId);
     
-    /*public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceCommand>
+    public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceCommand>
     {
         public CreateDeviceCommandValidator()
         {
-            RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.Manufacturer).NotEmpty();
-            RuleFor(x => x.Model).NotEmpty();
-            RuleFor(x => x.PartNumber).NotEmpty();
-            RuleFor(x => x.LotNumber).NotEmpty();
+            RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required.");
+            RuleFor(x => x.Manufacturer).NotEmpty().WithMessage("Manufacturer is required.");
+            RuleFor(x => x.Model).NotEmpty().WithMessage("Model is required.");
+            RuleFor(x => x.PartNumber).NotEmpty().WithMessage("Part number is required.");
+            RuleFor(x => x.LotNumber).NotEmpty().WithMessage("Lot number is required.");
         }
-    }*/
+    }
     
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapPost("devices", async (IMediator mediator, CreateDeviceCommand command) =>
-            {
-               var deviceId = await mediator.Send(command);
-               
-               return Results.Ok(new Response(deviceId));
-            }).WithTags("Devices");
+                {
+                    var deviceId = await mediator.Send(command);
+
+                    return Results.Ok(new Response(deviceId));
+                }).WithTags("Devices")
+                .AddEndpointFilter<ValidationFilter<CreateDeviceCommand>>();
         }
     }
     
@@ -48,13 +49,6 @@ public static class CreateDevice
     {
         public async Task<int> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
         {
-            /*var validationResult = await validator.ValidateAsync(request, cancellationToken);
-            
-            if (!validationResult.IsValid)
-            {
-                return Results.BadRequest(validationResult.Errors);
-            }*/
-            
             var device = new Device
             {
                 Description = request.Description,
