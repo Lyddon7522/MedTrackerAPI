@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<Program>());
 
 var folder = Environment.SpecialFolder.LocalApplicationData;
