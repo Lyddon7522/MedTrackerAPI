@@ -29,7 +29,7 @@ public static class CreateDevice
                 {
                     var deviceId = await mediator.Send(command);
 
-                    return Results.Ok(new Response(deviceId));
+                    return Results.CreatedAtRoute("GetDevice", new { deviceId }, new Response(deviceId));
                 }).WithTags("Devices")
                 .AddEndpointFilter<ValidationFilter<CreateDeviceCommand>>();
         }
