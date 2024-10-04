@@ -16,10 +16,9 @@ public static class GetDevice
         {
             app.MapGet("devices/{deviceId}", async (IMediator mediator, int deviceId) =>
                 {
-                    var query = new GetDeviceQuery { DeviceId = deviceId };
-                    var device = await mediator.Send(query);
+                    var device = await mediator.Send(new GetDeviceQuery { DeviceId = deviceId });
                     
-                    return device is null ? Results.BadRequest("Device not found") : Results.Ok(device);
+                    return device is null ? Results.NotFound() : Results.Ok(device);
                 }).WithTags("Devices");
         }
     }
@@ -29,17 +28,12 @@ public static class GetDevice
         public int DeviceId { get; set; }
     }
     
-    public class GetDeviceQueryHandler(MedTrackerDbContext context) : IRequestHandler<GetDeviceQuery, Response>
+    public class GetDeviceQueryHandler(MedTrackerDbContext context) : IRequestHandler<GetDeviceQuery, Response?>
     {
-        public async Task<Response> Handle(GetDeviceQuery request, CancellationToken cancellationToken)
+        public async Task<Response?> Handle(GetDeviceQuery request, CancellationToken cancellationToken)
         { 
-            var device = await context.Devices.Where(d => d.Id == request.DeviceId).SingleOrDefaultAsync(cancellationToken);
-   
-            if (device is null)
-            {
-                return null!;
-            }
-            return new Response(device.Id, device.Description, device.Manufacturer, device.Model, device.PartNumber, device.LotNumber);
+            return (await context.Devices.FindAsync([request.DeviceId], cancellationToken)) is { } device 
+                ? new Response(device.Id, device.Description, device.Manufacturer, device.Model, device.PartNumber, device.LotNumber) : null;
         }
     }
 }
