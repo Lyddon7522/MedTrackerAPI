@@ -8,7 +8,7 @@ namespace MedTrackerAPI.Features.Devices;
 
 public static class GetDevice
 {
-    public record Response(int DeviceId, string Description, string Manufacturer, string Model, string PartNumber, string LotNumber);
+    public record Response(int DeviceId, string? Description, string? Manufacturer, string? Model, string? PartNumber, string? LotNumber);
     
     public sealed class Endpoint : IEndpoint
     {
@@ -19,7 +19,7 @@ public static class GetDevice
                     var device = await mediator.Send(new GetDeviceQuery { DeviceId = deviceId });
                     
                     return device is null ? Results.NotFound() : Results.Ok(device);
-                }).WithTags("Devices");
+                }).WithName("GetDevice").WithTags("Devices");
         }
     }
     

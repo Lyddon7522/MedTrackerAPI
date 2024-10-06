@@ -20,11 +20,11 @@ public record Supply
 public record Device
 {
     public int Id { get; set; }
-    public required string Description { get; set; }
+    public required string? Description { get; set; }
     public string? SerialNumber { get; set; }
-    public required string  Manufacturer { get; set; }
-    public required string  Model { get; set; }
-    public required string  PartNumber { get; set; }
-    public required string  LotNumber { get; set; }
+    public required string?  Manufacturer { get; set; }
+    public required string?  Model { get; set; }
+    public required string?  PartNumber { get; set; }
+    public required string?  LotNumber { get; set; }
     public List<Supply> Supplies { get; set; } = [];
 }
