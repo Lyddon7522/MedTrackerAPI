@@ -7,7 +7,7 @@ namespace MedTrackerAPI.Features.Devices;
 
 public static class CreateDevice
 {
-    private record Response (int DeviceId);
+    public record Response (int DeviceId, string Description, string Manufacturer, string Model, string PartNumber, string LotNumber);
     
     public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceCommand>
     {
@@ -27,15 +27,15 @@ public static class CreateDevice
         {
             app.MapPost("devices", async (IMediator mediator, CreateDeviceCommand command) =>
                 {
-                    var deviceId = await mediator.Send(command);
+                    var device = await mediator.Send(command);
 
-                    return Results.CreatedAtRoute("GetDevice", new { deviceId }, new Response(deviceId));
+                    return Results.CreatedAtRoute("GetDevice", new { device.DeviceId }, device);
                 }).WithTags("Devices")
                 .AddEndpointFilter<ValidationFilter<CreateDeviceCommand>>();
         }
     }
     
-    public class CreateDeviceCommand() : IRequest<int>
+    public class CreateDeviceCommand() : IRequest<Response>
     {
         public string Description { get; set; }
         public string? SerialNumber { get; set; }
@@ -45,9 +45,9 @@ public static class CreateDevice
         public string  LotNumber { get; set; }
     }
     
-    public class CreateDeviceCommandHandler(MedTrackerDbContext context) : IRequestHandler<CreateDeviceCommand, int>
+    public class CreateDeviceCommandHandler(MedTrackerDbContext context) : IRequestHandler<CreateDeviceCommand, Response?>
     {
-        public async Task<int> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
+        public async Task<Response?> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
         {
             var device = new Device
             {
@@ -61,8 +61,8 @@ public static class CreateDevice
 
             context.Devices.Add(device);
             await context.SaveChangesAsync(cancellationToken);
-            
-            return device.Id;
+
+            return new Response(device.Id, device.Description, device.Manufacturer, device.Model, device.PartNumber, device.LotNumber);
         }
     }
 }
