@@ -8,7 +8,7 @@ namespace MedTrackerAPI.Features.Devices;
 
 public static class GetDevice
 {
-    public record Response(int DeviceId, string Description, string Manufacturer, string Model, string PartNumber, string LotNumber);
+    public record Response(int DeviceId, string? Description, string? Manufacturer, string? Model, string? PartNumber, string? LotNumber);
     
     public sealed class Endpoint : IEndpoint
     {

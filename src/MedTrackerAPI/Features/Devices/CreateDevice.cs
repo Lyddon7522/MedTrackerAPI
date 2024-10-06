@@ -7,7 +7,7 @@ namespace MedTrackerAPI.Features.Devices;
 
 public static class CreateDevice
 {
-    public record Response (int DeviceId, string Description, string Manufacturer, string Model, string PartNumber, string LotNumber);
+    public record Response (int DeviceId, string? Description, string? Manufacturer, string? Model, string? PartNumber, string? LotNumber);
     
     public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceCommand>
     {
@@ -37,12 +37,12 @@ public static class CreateDevice
     
     public class CreateDeviceCommand() : IRequest<Response>
     {
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string? SerialNumber { get; set; }
-        public string  Manufacturer { get; set; }
-        public string  Model { get; set; }
-        public string  PartNumber { get; set; }
-        public string  LotNumber { get; set; }
+        public string? Manufacturer { get; set; }
+        public string? Model { get; set; }
+        public string? PartNumber { get; set; }
+        public string? LotNumber { get; set; }
     }
     
     public class CreateDeviceCommandHandler(MedTrackerDbContext context) : IRequestHandler<CreateDeviceCommand, Response?>
