@@ -13,10 +13,10 @@ public static class AddSupply
     {
         public AddSupplyCommandValidator()
         {
-            RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required.");
-            RuleFor(x => x.PartNumber).NotEmpty().WithMessage("Part number is required.");
-            RuleFor(x => x.LotNumber).NotEmpty().WithMessage("Lot number is required.");
-            RuleFor(x => x.DeviceId).NotEmpty().WithMessage("Device Id is required.");
+            RuleFor(x => x.Description).NotEmpty();
+            RuleFor(x => x.PartNumber).NotEmpty();
+            RuleFor(x => x.LotNumber).NotEmpty();
+            RuleFor(x => x.DeviceId).NotEmpty();
         }
     }
 
@@ -36,10 +36,10 @@ public static class AddSupply
     
     public class AddSupplyCommand : IRequest<Response>
     {
-        public required string Description { get; set; }
+        public string? Description { get; set; }
         public string? Manufacturer { get; set; }
-        public required string PartNumber { get; set; }
-        public required string LotNumber { get; set; }
+        public string? PartNumber { get; set; }
+        public string? LotNumber { get; set; }
         public int DeviceId { get; set; }
     }
 

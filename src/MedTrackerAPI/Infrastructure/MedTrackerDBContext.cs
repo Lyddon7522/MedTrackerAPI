@@ -6,24 +6,15 @@ public class MedTrackerDbContext(DbContextOptions<MedTrackerDbContext> options) 
 {
     public DbSet<Device> Devices { get; set; } = null!;
     public DbSet<Supply> Supplies { get; set; } = null!;
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Supply>()
-            .HasOne(s => s.Device)
-            .WithMany(d => d.Supplies)
-            .HasForeignKey(s => s.DeviceId)
-            .IsRequired();
-    }
 }
 
 public record Supply
 {
     public int Id { get; set; }
-    public required string Description { get; set; }
+    public required string? Description { get; set; }
     public string? Manufacturer { get; set; }
-    public required string PartNumber { get; set; }
-    public required string LotNumber { get; set; }
+    public required string? PartNumber { get; set; }
+    public required string? LotNumber { get; set; }
     public int DeviceId { get; set; }
     public Device Device { get; set; } = null!;
 }
