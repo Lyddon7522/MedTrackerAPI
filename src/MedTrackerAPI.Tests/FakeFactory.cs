@@ -4,12 +4,9 @@ namespace MedTrackerAPI.Tests;
 
 public static class FakeFactory
 {
-    private static int Seed { get; } = new Random(8675309).Next();
-    
     public static Device CreateFakeDevice()
     {
         var faker = new Faker<Device>()
-            .UseSeed(Seed)
             .RuleFor(d => d.Id, f => f.Random.Int(1, 1000))
             .RuleFor(d => d.Description, f => f.Commerce.ProductName())
             .RuleFor(d => d.SerialNumber, f => f.Commerce.Ean8())
@@ -25,7 +22,6 @@ public static class FakeFactory
     public static List<Supply> CreateFakeSuppliesForDevice(int deviceId)
     {
         var faker = new Faker<Supply>()
-            .UseSeed(Seed)
             .RuleFor(s => s.Id, f => f.Random.Int(1, 1000))
             .RuleFor(s => s.Description, f => f.Commerce.ProductName())
             .RuleFor(s => s.Manufacturer, f => f.Company.CompanyName())
