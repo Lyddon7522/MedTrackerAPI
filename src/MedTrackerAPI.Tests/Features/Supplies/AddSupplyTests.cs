@@ -7,12 +7,14 @@ namespace MedTrackerAPI.Tests.Features.Supplies;
 
 public class AddSupplyTests
 {
-    private Device _device;
-
+    private Device _device = null!;
+    private Supply _supply = null!;
+    
     [SetUp]
     public void Setup()
     {
         _device = CreateFakeDevice().WithSupply();
+        _supply = _device.Supplies.First();
     }
     
     [TestCase(null)]
@@ -50,10 +52,10 @@ public class AddSupplyTests
     public void GivenAllValidFields_ThenIsValid() => 
         new AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
         {
-            Description = _device.Supplies.First().Description,
-            Manufacturer = _device.Supplies.First().Manufacturer,
-            PartNumber = _device.Supplies.First().PartNumber,
-            LotNumber = _device.Supplies.First().LotNumber,
+            Description = _supply.Description,
+            Manufacturer = _supply.Manufacturer,
+            PartNumber = _supply.PartNumber,
+            LotNumber = _supply.LotNumber,
             DeviceId = _device.Id
         }).ShouldNotHaveAnyValidationErrors();
 }
