@@ -13,17 +13,17 @@ public static class FakeFactory
         return autoFaker.Generate();
     }
 
-    public static Device WithSupplies(this Device device, Action<Supply>? configure = null)
+    public static Device WithSupply(this Device device, Action<Supply>? configure = null)
     {
         var supplies = new AutoFaker<Supply>()
             .RuleFor(s => s.Id, f => f.Random.Int(min: 1, max: int.MaxValue))
             .RuleFor(s => s.DeviceId, f => device.Id)
             .RuleFor(s => s.Device, f => device)
-            .Generate(new Random().Next(1, 100));
+            .Generate();
 
-        supplies.ForEach(supply => configure?.Invoke(supply));
+        configure?.Invoke(supplies);
 
-        (device.Supplies ??= []).AddRange(supplies);
+        device.Supplies.Add(supplies);
 
         return device;
     }
