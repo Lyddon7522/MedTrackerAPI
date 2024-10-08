@@ -13,8 +13,7 @@ public class AddSupplyTests
     [SetUp]
     public void Setup()
     {
-        _device = CreateFakeDevice();
-        _device.WithSupply();
+        _device = CreateFakeDevice().WithSupply();
     }
     
     [TestCase(null)]
