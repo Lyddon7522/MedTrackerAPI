@@ -19,7 +19,7 @@ public class AddSupplyTests
     [TestCase(null)]
     [TestCase("")]
     public void GivenNoDescription_ThenIsNotValid(string? value) =>
-        new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
+        new AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
         {
             Description = value
         }).ShouldHaveValidationErrorFor(x => x.Description);
@@ -27,7 +27,7 @@ public class AddSupplyTests
     [TestCase(null)]
     [TestCase("")]
     public void GivenNoPartNumber_ThenIsNotValid(string? value) =>
-        new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
+        new AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
         {
             PartNumber = value
         }).ShouldHaveValidationErrorFor(x => x.PartNumber);
@@ -35,22 +35,21 @@ public class AddSupplyTests
     [TestCase(null)]
     [TestCase("")]
     public void GivenNoLotNumber_ThenIsNotValid(string? value) =>
-        new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
+        new AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
         {
             LotNumber = value
         }).ShouldHaveValidationErrorFor(x => x.LotNumber);
     
     [TestCase(0)]
     public void GivenNoDeviceId_ThenIsNotValid(int value) =>
-        new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
+        new AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
         {
             DeviceId = value
         }).ShouldHaveValidationErrorFor(x => x.DeviceId);
     
     [Test]
-    public void GivenAllValidFields_ThenIsValid()
-    {
-        new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
+    public void GivenAllValidFields_ThenIsValid() => 
+        new AddSupplyCommandValidator().TestValidate(new AddSupplyCommand
         {
             Description = _device.Supplies.First().Description,
             Manufacturer = _device.Supplies.First().Manufacturer,
@@ -58,5 +57,4 @@ public class AddSupplyTests
             LotNumber = _device.Supplies.First().LotNumber,
             DeviceId = _device.Id
         }).ShouldNotHaveAnyValidationErrors();
-    }
 }
