@@ -1,2 +1,1 @@
-global using FluentAssertions;
-global using Bogus;
+global using Soenneker.Utils.AutoBogus;

@@ -8,13 +8,11 @@ namespace MedTrackerAPI.Tests.Features.Supplies;
 public class AddSupplyTests
 {
     private Device _device;
-    private Supply _supply;
 
     [SetUp]
     public void Setup()
     {
         _device = CreateFakeDevice();
-        _supply = CreateFakeSuppliesForDevice(_device.Id).First();
     }
     
     [TestCase(null)]
@@ -22,10 +20,7 @@ public class AddSupplyTests
     public void GivenNoDescription_ThenIsNotValid(string? value) =>
         new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupply.AddSupplyCommand
         {
-            Description = value,
-            PartNumber = _supply.PartNumber,
-            LotNumber = _supply.LotNumber,
-            DeviceId = _supply.DeviceId
+            Description = value
         }).ShouldHaveValidationErrorFor(x => x.Description);
 
     [TestCase(null)]
@@ -33,10 +28,7 @@ public class AddSupplyTests
     public void GivenNoPartNumber_ThenIsNotValid(string? value) =>
         new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupply.AddSupplyCommand
         {
-            Description = _supply.Description,
-            PartNumber = value,
-            LotNumber = _supply.LotNumber,
-            DeviceId = _supply.DeviceId
+            PartNumber = value
         }).ShouldHaveValidationErrorFor(x => x.PartNumber);
 
     [TestCase(null)]
@@ -44,19 +36,13 @@ public class AddSupplyTests
     public void GivenNoLotNumber_ThenIsNotValid(string? value) =>
         new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupply.AddSupplyCommand
         {
-            Description = _supply.Description,
-            PartNumber = _supply.PartNumber,
-            LotNumber = value,
-            DeviceId = _supply.DeviceId
+            LotNumber = value
         }).ShouldHaveValidationErrorFor(x => x.LotNumber);
     
     [TestCase(0)]
     public void GivenNoDeviceId_ThenIsNotValid(int value) =>
         new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupply.AddSupplyCommand
         {
-            Description = _supply.Description,
-            PartNumber = _supply.PartNumber,
-            LotNumber = _supply.LotNumber,
             DeviceId = value
         }).ShouldHaveValidationErrorFor(x => x.DeviceId);
     
@@ -65,11 +51,11 @@ public class AddSupplyTests
     {
         new AddSupply.AddSupplyCommandValidator().TestValidate(new AddSupply.AddSupplyCommand
         {
-            Description = _supply.Description,
-            Manufacturer = _supply.Manufacturer,
-            PartNumber = _supply.PartNumber,
-            LotNumber = _supply.LotNumber,
-            DeviceId = _supply.DeviceId
+            Description = _device.WithSupplies().Description,
+            Manufacturer = _device.WithSupplies().Manufacturer,
+            PartNumber = _device.WithSupplies().PartNumber,
+            LotNumber = _device.WithSupplies().LotNumber,
+            DeviceId = _device.Id
         }).ShouldNotHaveAnyValidationErrors();
     }
 }

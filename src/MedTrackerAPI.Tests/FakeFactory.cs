@@ -6,29 +6,25 @@ public static class FakeFactory
 {
     public static Device CreateFakeDevice()
     {
-        var faker = new Faker<Device>()
-            .RuleFor(d => d.Id, f => f.Random.Int(1, 1000))
-            .RuleFor(d => d.Description, f => f.Commerce.ProductName())
-            .RuleFor(d => d.SerialNumber, f => f.Commerce.Ean8())
-            .RuleFor(d => d.Manufacturer, f => f.Company.CompanyName())
-            .RuleFor(d => d.Model, f => f.Commerce.ProductMaterial())
-            .RuleFor(d => d.PartNumber, f => f.Commerce.Ean8())
-            .RuleFor(d => d.LotNumber, f => f.Random.AlphaNumeric(5))
-            .RuleFor(d => d.Supplies, (f, d) => CreateFakeSuppliesForDevice(d.Id));;
-
-        return faker.Generate();
+        var autoFaker = new AutoFaker<Device>()
+            .RuleFor(d => d.Id, f => f.Random.Int(min: 1, max: int.MaxValue))
+            .RuleFor(d => d.Supplies, f => []);
+        
+        return autoFaker.Generate();
     }
 
-    public static List<Supply> CreateFakeSuppliesForDevice(int deviceId)
+    public static Device WithSupplies(this Device device, Action<Supply>? configure = null)
     {
-        var faker = new Faker<Supply>()
-            .RuleFor(s => s.Id, f => f.Random.Int(1, 1000))
-            .RuleFor(s => s.Description, f => f.Commerce.ProductName())
-            .RuleFor(s => s.Manufacturer, f => f.Company.CompanyName())
-            .RuleFor(s => s.PartNumber, f => f.Commerce.Ean8())
-            .RuleFor(s => s.LotNumber, f => f.Random.AlphaNumeric(5))
-            .RuleFor(s => s.DeviceId, f => deviceId);
+        var supplies = new AutoFaker<Supply>()
+            .RuleFor(s => s.Id, f => f.Random.Int(min: 1, max: int.MaxValue))
+            .RuleFor(s => s.DeviceId, f => device.Id)
+            .RuleFor(s => s.Device, f => device)
+            .Generate(new Random().Next(1, 100));
 
-        return faker.Generate(5);
+        supplies.ForEach(supply => configure?.Invoke(supply));
+
+        (device.Supplies ??= []).AddRange(supplies);
+
+        return device;
     }
 }
