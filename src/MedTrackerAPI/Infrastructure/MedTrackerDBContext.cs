@@ -4,6 +4,7 @@ namespace MedTrackerAPI.Infrastructure;
 
 public class MedTrackerDbContext(DbContextOptions<MedTrackerDbContext> options) : DbContext(options)
 {
+    public DbSet<User> User { get; set; } = null!;
     public DbSet<Device> Devices { get; set; } = null!;
     public DbSet<Supply> Supplies { get; set; } = null!;
 }
@@ -29,4 +30,12 @@ public record Device
     public required string?  PartNumber { get; set; }
     public required string?  LotNumber { get; set; }
     public List<Supply> Supplies { get; set; } = [];
+}
+
+public record User
+{
+    public required Guid UserId { get; set; }
+    public required string Email { get; set; }
+    public required string Name { get; set; }
+    public required string IdentityId { get; set; }
 }
