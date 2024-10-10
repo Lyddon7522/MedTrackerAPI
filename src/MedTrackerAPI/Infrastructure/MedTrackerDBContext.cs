@@ -7,6 +7,16 @@ public class MedTrackerDbContext(DbContextOptions<MedTrackerDbContext> options) 
     public DbSet<User> User { get; set; } = null!;
     public DbSet<Device> Devices { get; set; } = null!;
     public DbSet<Supply> Supplies { get; set; } = null!;
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId);
+            entity.HasIndex(e => e.Email).IsUnique();
+            entity.HasIndex(e => e.IdentityId).IsUnique();
+        });
+    }
 }
 
 public record Supply
