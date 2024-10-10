@@ -1,10 +1,21 @@
+using FirebaseAdmin;
 using FluentValidation;
+using Google.Apis.Auth.OAuth2;
+using MedTrackerAPI.Authentication;
 using MedTrackerAPI.Endpoints;
 using MedTrackerAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Testcontainers.PostgreSql;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Todo: Move FB infor to configuration and inject with env variables in GitHub actions
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile("medtracker-firebase.json")
+});
+
+builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
 // TODO - Get App to use environment
 /*if (builder.Environment.IsDevelopment())
