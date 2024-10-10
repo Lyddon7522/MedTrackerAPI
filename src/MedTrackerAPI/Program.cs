@@ -2,7 +2,6 @@ using FluentValidation;
 using MedTrackerAPI.Endpoints;
 using MedTrackerAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Testcontainers.PostgreSql;
 
 var builder = WebApplication.CreateBuilder(args);
 

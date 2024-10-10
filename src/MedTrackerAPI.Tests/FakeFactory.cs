@@ -8,7 +8,7 @@ public static class FakeFactory
     {
         var autoFaker = new AutoFaker<Device>()
             .RuleFor(d => d.Id, f => f.Random.Int(min: 1, max: int.MaxValue))
-            .RuleFor(d => d.Supplies, f => []);
+            .RuleFor(d => d.Supplies, _ => []);
         
         return autoFaker.Generate();
     }
@@ -17,7 +17,7 @@ public static class FakeFactory
     {
         var supplies = new AutoFaker<Supply>()
             .RuleFor(s => s.Id, f => f.Random.Int(min: 1, max: int.MaxValue))
-            .RuleFor(s => s.DeviceId, f => device.Id)
+            .RuleFor(s => s.DeviceId, _ => device.Id)
             .RuleFor(s => s.Device, f => device)
             .Generate();
 

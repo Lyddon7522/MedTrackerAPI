@@ -1,5 +1,4 @@
 using FluentValidation;
-using MedTrackerAPI.Features.Devices;
 
 namespace MedTrackerAPI.Endpoints;
 

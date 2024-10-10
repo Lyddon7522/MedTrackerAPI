@@ -35,7 +35,7 @@ public static class CreateDevice
         }
     }
     
-    public class CreateDeviceCommand() : IRequest<Response>
+    public class CreateDeviceCommand : IRequest<Response>
     {
         public string? Description { get; set; }
         public string? SerialNumber { get; set; }

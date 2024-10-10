@@ -1,8 +1,6 @@
 using MediatR;
 using MedTrackerAPI.Endpoints;
 using MedTrackerAPI.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace MedTrackerAPI.Features.Devices;
 
