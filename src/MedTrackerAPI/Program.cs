@@ -2,7 +2,6 @@ using FluentValidation;
 using MedTrackerAPI.Endpoints;
 using MedTrackerAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Testcontainers.PostgreSql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<Program>());
@@ -55,6 +57,8 @@ using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<MedTrackerDbContext>();
 dbContext.Database.EnsureDeleted();
 dbContext.Database.EnsureCreated();
+
+app.UseExceptionHandler();
 
 app.MapEndpoints();
 
