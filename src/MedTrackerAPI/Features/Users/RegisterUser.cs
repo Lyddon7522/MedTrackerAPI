@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using MedTrackerAPI.Authentication;
 using MedTrackerAPI.Endpoints;
@@ -8,8 +9,17 @@ namespace MedTrackerAPI.Features.Users;
 public static class RegisterUser
 {
     //TODO: Add validator
-    public record RegisterUserCommand(string Email, string Password, string Name) : IRequest<Response>;
     public record Response(Guid UserId, string Email, string Name, string IdentityId);
+
+    public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+    {
+        public RegisterUserCommandValidator()
+        {
+            RuleFor(x => x.Email).NotEmpty().EmailAddress();
+            RuleFor(x => x.Password).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty();
+        }
+    }
     
     public sealed class Endpoint : IEndpoint
     {
@@ -21,6 +31,13 @@ public static class RegisterUser
                     return Results.Created("", user);
                 }).WithTags("Users");
         }
+    }
+    
+    public class RegisterUserCommand : IRequest<Response>
+    {
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public string? Name { get; set; }
     }
 
     public class RegisterUserCommandHandler(MedTrackerDbContext context, IAuthenticationService authenticationService) 
