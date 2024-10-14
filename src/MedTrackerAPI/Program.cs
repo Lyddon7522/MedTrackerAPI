@@ -1,6 +1,7 @@
 using FluentValidation;
 using MedTrackerAPI.Endpoints;
 using MedTrackerAPI.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +43,16 @@ builder.Services.AddDbContext<MedTrackerDbContext>(options =>
 
 builder.Services.AddEndpoints();
 
+builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
+{
+    jwtOptions.Authority = builder.Configuration["Authentication:Issuer"];
+    jwtOptions.Audience = builder.Configuration["Authentication:Audience"];
+    jwtOptions.TokenValidationParameters.ValidIssuer = builder.Configuration["Authentication:Issuer"];
+    //Todo: Remove this for production
+    jwtOptions.RequireHttpsMetadata = false;
+});
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -61,6 +72,10 @@ dbContext.Database.EnsureCreated();
 app.UseExceptionHandler();
 
 app.MapEndpoints();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();
 
