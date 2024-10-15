@@ -30,7 +30,8 @@ public static class AddSupply
 
                 return Results.Created("", supply);
             }).WithTags("Supplies")
-            .AddEndpointFilter<ValidationFilter<AddSupplyCommand>>();
+            .AddEndpointFilter<ValidationFilter<AddSupplyCommand>>()
+            .RequireAuthorization();
         }
     }
     

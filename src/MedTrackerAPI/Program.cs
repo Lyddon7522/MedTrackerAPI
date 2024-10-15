@@ -1,6 +1,8 @@
 using FluentValidation;
 using MedTrackerAPI.Endpoints;
 using MedTrackerAPI.Infrastructure;
+using MedTrackerAPI.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -42,14 +44,22 @@ builder.Services.AddDbContext<MedTrackerDbContext>(options =>
 
 builder.Services.AddEndpoints();
 
+builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
+{
+    jwtOptions.Authority = builder.Configuration["Authentication:Issuer"];
+    jwtOptions.Audience = builder.Configuration["Authentication:Audience"];
+    jwtOptions.TokenValidationParameters.ValidIssuer = builder.Configuration["Authentication:Issuer"];
+});
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+}
 
 app.UseHttpsRedirection();
 
@@ -61,6 +71,10 @@ dbContext.Database.EnsureCreated();
 app.UseExceptionHandler();
 
 app.MapEndpoints();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();
 

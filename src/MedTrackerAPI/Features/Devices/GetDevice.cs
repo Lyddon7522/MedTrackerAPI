@@ -17,7 +17,7 @@ public static class GetDevice
                     var device = await mediator.Send(new GetDeviceQuery { DeviceId = deviceId });
                     
                     return device is null ? Results.NotFound() : Results.Ok(device);
-                }).WithName("GetDevice").WithTags("Devices");
+                }).WithName("GetDevice").WithTags("Devices").RequireAuthorization();
         }
     }
     
