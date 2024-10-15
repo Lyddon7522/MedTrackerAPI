@@ -31,7 +31,8 @@ public static class CreateDevice
 
                     return Results.CreatedAtRoute("GetDevice", new { device.DeviceId }, device);
                 }).WithTags("Devices")
-                .AddEndpointFilter<ValidationFilter<CreateDeviceCommand>>();
+                .AddEndpointFilter<ValidationFilter<CreateDeviceCommand>>()
+                .RequireAuthorization();
         }
     }
     
